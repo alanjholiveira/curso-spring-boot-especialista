@@ -1,0 +1,5 @@
+org/curso/java/VendasApplication.class
+org/curso/java/MyConfiguration.class
+org/curso/java/service/ClientService.class
+org/curso/java/repository/ClientRepository.class
+org/curso/java/model/Client.class
