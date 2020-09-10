@@ -2,6 +2,8 @@ package org.curso.java.rest.controller;
 
 import org.curso.java.domain.entity.ItemPedido;
 import org.curso.java.domain.entity.Pedido;
+import org.curso.java.domain.enums.StatusPedido;
+import org.curso.java.rest.dto.AtualizacaoStatusPedidoDTO;
 import org.curso.java.rest.dto.InformacaoItemPedidoDTO;
 import org.curso.java.rest.dto.InformacoesPedidoDTO;
 import org.curso.java.rest.dto.PedidoDTO;
@@ -15,8 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @RestController
 @RequestMapping("/api/pedidos")
@@ -42,6 +43,14 @@ public class PedidoController {
                         .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "Pedido não encontrado."));
     }
 
+    @PatchMapping("{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void updateStatus(@PathVariable Integer id,
+                             @RequestBody AtualizacaoStatusPedidoDTO dto) {
+        String novoStatus = dto.getNovoStatus();
+        service.atualizaStatus(id, StatusPedido.valueOf(novoStatus));
+    }
+
     private InformacoesPedidoDTO converter(Pedido pedido) {
 
         return InformacoesPedidoDTO
@@ -51,6 +60,7 @@ public class PedidoController {
                 .cpf(pedido.getCliente().getCpf())
                 .nomeCliente(pedido.getCliente().getNome())
                 .total(pedido.getTotal())
+                .status(pedido.getStatus().name())
                 .items(converter(pedido.getItens()))
                 .build();
 

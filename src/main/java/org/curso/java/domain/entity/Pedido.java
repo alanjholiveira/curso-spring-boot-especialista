@@ -3,6 +3,7 @@ package org.curso.java.domain.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.curso.java.domain.enums.StatusPedido;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -30,6 +31,10 @@ public class Pedido {
 
     @Column(name = "total", precision = 20, scale = 2)
     private BigDecimal total;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusPedido status;
 
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens;
